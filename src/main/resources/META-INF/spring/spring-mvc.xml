@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+       ">
 
     <context:property-placeholder
         location="classpath*:/META-INF/spring/*.properties" />
 
+    <!-- Add for @Async -->
+    <task:annotation-driven />
+
     <mvc:annotation-driven>
+        <!-- Add for Async(Callable/DeferredResult) -->
+        <mvc:async-support default-timeout="3000" />
         <mvc:argument-resolvers>
             <bean
                 class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
@@ -27,7 +37,9 @@
 
     <mvc:resources mapping="/resources/**"
         location="/resources/,classpath:META-INF/resources/"
-        cache-period="#{60 * 60}" />
+        cache-period="#{60 * 60}">
+        <mvc:cache-control cache-public="true" proxy-revalidate="true" s-maxage="3600" max-age="3600" />
+    </mvc:resources>
 
     <mvc:interceptors>
         <mvc:interceptor>
@@ -111,5 +123,19 @@
         <aop:advisor advice-ref="handlerExceptionResolverLoggingInterceptor"
             pointcut="execution(* org.springframework.web.servlet.HandlerExceptionResolver.resolveException(..))" />
     </aop:config>
+
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="queueCapacity" value="25" />
+    </bean>
+
+    <mvc:view-controller path="cros/local/form" view-name="cros/localForm" />
+    <mvc:view-controller path="cros/global/form" view-name="cros/globalForm" />
+
+    <mvc:cors>
+        <mvc:mapping path="/cros/global/**" allowed-origins="http://spring.example.jp:8080"/>
+    </mvc:cors>
 
 </beans>
