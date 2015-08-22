@@ -1,0 +1,19 @@
+{
+  "id": "1",
+  "personName": {
+    "first": "Kazuki mod",
+    "last": "Shimizu mod"
+  },
+  "streetAddress": {
+    "zipCode": "123-4567 mod",
+    "prefecture": "Tokyo mod",
+    "city": "Toshima-ku mod",
+    "address1": "Nagasaki mod",
+    "address2": "1-2-3 mod",
+    "address3": "Yamada-sou 101 mod"
+  },
+  "mailAddress": {
+    "address": "test@example.com.mod",
+    "publication": false
+  }
+}

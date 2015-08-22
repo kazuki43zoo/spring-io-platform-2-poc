@@ -1,0 +1,18 @@
+{
+  "personName": {
+    "first": "Kazuki",
+    "last": "Shimizu"
+  },
+  "streetAddress": {
+    "zipCode": "123-4567",
+    "prefecture": "Tokyo",
+    "city": "Toshima-ku",
+    "address1": "Nagasaki",
+    "address2": "1-2-3",
+    "address3": "Yamada-sou 101"
+  },
+  "mailAddress": {
+    "address": "test@example.com",
+    "publication": true
+  }
+}

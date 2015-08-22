@@ -16,13 +16,6 @@ public class AsyncHelper {
 
     @Async
     public void deferred(long wait,DeferredResult<String> deferredResult, Model model, Locale locale) throws InterruptedException {
-        Date date = new Date();
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
-                DateFormat.LONG, locale);
-
-        String formattedDate = dateFormat.format(date);
-
-        model.addAttribute("serverTime", formattedDate);
 
         if(wait == 999){
             deferredResult.setErrorResult(new NullPointerException("error."));
@@ -30,6 +23,14 @@ public class AsyncHelper {
         }
 
         TimeUnit.SECONDS.sleep(wait);
+
+        Date date = new Date();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
+                DateFormat.LONG, locale);
+
+        String formattedDate = dateFormat.format(date);
+
+        model.addAttribute("serverTime", formattedDate);
 
         deferredResult.setErrorResult("welcome/home");
 

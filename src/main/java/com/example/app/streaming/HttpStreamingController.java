@@ -56,6 +56,11 @@ public class HttpStreamingController {
         return new StreamingResponseBody() {
             @Override
             public void writeTo(OutputStream outputStream) throws IOException {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 outputStream.write("Hello!!\r\n".getBytes(StandardCharsets.UTF_8));
                 outputStream.write("Hello again!!\r\n".getBytes(StandardCharsets.UTF_8));
                 if(wait == 999){

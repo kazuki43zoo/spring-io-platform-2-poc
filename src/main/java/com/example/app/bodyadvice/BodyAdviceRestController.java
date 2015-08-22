@@ -18,6 +18,9 @@ public class BodyAdviceRestController {
 
     private Map<String, AccountResource> accounts = new ConcurrentHashMap<>();
 
+    IdGenerator idGenerator = new IdGenerator() {
+    };
+
     @RequestMapping(method = RequestMethod.GET)
     @JsonView(AccountResource.View.class)
     public List<AccountResource> getAccounts() {
@@ -26,12 +29,13 @@ public class BodyAdviceRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @JsonView(AccountResource.View.class)
+    @ResponseStatus(HttpStatus.CREATED)
     public AccountResource postAccount(
             @JsonView(AccountResource.View.class)
             @RequestBody
             @Validated({Default.class, AccountResource.Post.class})
             AccountResource newResource) {
-        newResource.setId(UUID.randomUUID().toString());
+        newResource.setId(idGenerator.generate());
         accounts.put(newResource.getId(), newResource);
         return newResource;
     }
@@ -44,6 +48,25 @@ public class BodyAdviceRestController {
             throw new ResourceNotFoundException("Account does not found. id : " + id);
         }
         return accountResource;
+    }
+
+    @RequestMapping(path = "{id}", method = RequestMethod.PUT)
+    @JsonView(AccountResource.View.class)
+    public AccountResource putAccount(
+            @PathVariable("id") String id,
+            @JsonView(AccountResource.View.class)
+            @RequestBody
+            @Validated({Default.class, AccountResource.Put.class})
+            AccountResource updateResource) {
+        getAccount(id);
+        accounts.put(id, updateResource);
+        return updateResource;
+    }
+
+    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAccount(@PathVariable("id") String id) {
+        accounts.remove(id);
     }
 
     @RequestMapping(path = "format", method = RequestMethod.GET)
@@ -150,6 +173,16 @@ public class BodyAdviceRestController {
                                 .withPublication(true)
                                 .build())
                 .build();
+    }
+
+    public void setIdGenerator(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
+
+    public interface IdGenerator {
+        default String generate() {
+            return UUID.randomUUID().toString();
+        }
     }
 
 }

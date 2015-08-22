@@ -21,6 +21,8 @@ public class HttpStreamingHelper {
     @Async
     public void body(long wait, ResponseBodyEmitter emitter) throws IOException, InterruptedException {
 
+        TimeUnit.MILLISECONDS.sleep(100);
+
         emitter.send("Hello!!\r\n");
         TimeUnit.SECONDS.sleep(1);
         emitter.send("Hello again!!\r\n");
@@ -35,6 +37,8 @@ public class HttpStreamingHelper {
 
     @Async
     public void sse(long wait, SseEmitter emitter) throws IOException, InterruptedException {
+
+        TimeUnit.MILLISECONDS.sleep(100);
 
         SseEmitter.SseEventBuilder builder = emitter.event();
         emitter.send(emitter.event().id(UUID.randomUUID().toString()).data("Hello!"));

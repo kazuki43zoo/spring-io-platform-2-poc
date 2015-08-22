@@ -13,7 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @ContextConfiguration("classpath:META-INF/spring/applicationContext.xml"),
         @ContextConfiguration("classpath:META-INF/spring/spring-mvc.xml"),
 })
-public class HttpRangeTest {
+public class MetaAnnotationRequestMappingTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -36,9 +37,11 @@ public class HttpRangeTest {
     @Test
     public void test() throws Exception {
         this.mockMvc.perform(
-                get("/resources/app/css/styles.css")
-                        .header("Range", "bytes=0-199,200-"))
-                .andExpect(status().isPartialContent());
+                get("/requestmapping/message/msg001"))
+                .andExpect(
+                        status().isOk())
+                .andExpect(
+                        content().string("msg001"));
     }
 
 }

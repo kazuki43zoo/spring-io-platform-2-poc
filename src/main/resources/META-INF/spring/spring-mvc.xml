@@ -22,7 +22,7 @@
 
     <mvc:annotation-driven>
         <!-- Add for Async(Callable/DeferredResult) -->
-        <mvc:async-support default-timeout="3000" />
+        <mvc:async-support default-timeout="2000" />
         <mvc:argument-resolvers>
             <bean
                 class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />

@@ -1,0 +1,7 @@
+{
+  "id": "1",
+  "mailAddress": {
+    "address": "test@example.com",
+    "publication": true
+  }
+}

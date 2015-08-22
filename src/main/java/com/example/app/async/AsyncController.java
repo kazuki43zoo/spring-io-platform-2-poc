@@ -30,6 +30,13 @@ public class AsyncController {
     @RequestMapping(path = "callable", method = RequestMethod.GET)
     public Callable<String> callable(@RequestParam(name = "wait", defaultValue = "0") long wait, Model model, Locale locale) {
         return () -> {
+
+            if (wait == 999) {
+                throw new NullPointerException("error.");
+            }
+
+            TimeUnit.SECONDS.sleep(wait);
+
             Date date = new Date();
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
                     DateFormat.LONG, locale);
@@ -37,12 +44,6 @@ public class AsyncController {
             String formattedDate = dateFormat.format(date);
 
             model.addAttribute("serverTime", formattedDate);
-
-            if (wait == 999) {
-                throw new NullPointerException("error.");
-            }
-
-            TimeUnit.SECONDS.sleep(wait);
 
             return "welcome/home";
         };
@@ -60,6 +61,14 @@ public class AsyncController {
     @RequestMapping(path = "listenableFuture", method = RequestMethod.GET)
     public ListenableFuture<String> listenableFuture(@RequestParam(name = "wait", defaultValue = "0") long wait, Model model, Locale locale) throws InterruptedException {
         return taskExecutor.submitListenable(() -> {
+
+            if (wait == 999) {
+                throw new NullPointerException("error.");
+            }
+
+            TimeUnit.SECONDS.sleep(wait);
+
+
             Date date = new Date();
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
                     DateFormat.LONG, locale);
@@ -67,12 +76,6 @@ public class AsyncController {
             String formattedDate = dateFormat.format(date);
 
             model.addAttribute("serverTime", formattedDate);
-
-            if (wait == 999) {
-                throw new NullPointerException("error.");
-            }
-
-            TimeUnit.SECONDS.sleep(wait);
 
             return "welcome/home";
         });

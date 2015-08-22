@@ -13,7 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @ContextConfiguration("classpath:META-INF/spring/applicationContext.xml"),
         @ContextConfiguration("classpath:META-INF/spring/spring-mvc.xml"),
 })
-public class HttpRangeTest {
+public class ResponseStatusExceptionTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -33,12 +34,26 @@ public class HttpRangeTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
 
+
     @Test
-    public void test() throws Exception {
+    public void testTopLevel() throws Exception {
         this.mockMvc.perform(
-                get("/resources/app/css/styles.css")
-                        .header("Range", "bytes=0-199,200-"))
-                .andExpect(status().isPartialContent());
+                get("/exception/message/notFound"))
+                .andExpect(
+                        status().isNotFound())
+                .andExpect(
+                        content().string(""));
     }
+
+    @Test
+    public void testNestedLevel() throws Exception {
+        this.mockMvc.perform(
+                get("/exception/message/nestedNotFound"))
+                .andExpect(
+                        status().isNotFound())
+                .andExpect(
+                        content().string(""));
+    }
+
 
 }

@@ -36,11 +36,11 @@ public class RestTemplateOkHttpTest {
     @Test
     public void testGet() {
 
+
         OkHttpClientHttpRequestFactory factory = new OkHttpClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(factory);
 
         String content = restTemplate.getForObject("http://localhost:8080/rest/test", String.class);
-        System.out.println(content);
 
         assertThat(content, is("get by test"));
 
@@ -53,7 +53,6 @@ public class RestTemplateOkHttpTest {
         RestTemplate restTemplate = new RestTemplate(factory);
 
         String content = restTemplate.postForObject("http://localhost:8080/rest", null, String.class);
-        System.out.println(content);
 
         assertThat(content, is(startsWith("post with ")));
 
@@ -68,7 +67,6 @@ public class RestTemplateOkHttpTest {
         String content = restTemplate.exchange(
                 RequestEntity.put(URI.create("http://localhost:8080/rest/test")).build(),
                 String.class).getBody();
-        System.out.println(content);
 
         assertThat(content, is("put by test"));
 
@@ -83,7 +81,6 @@ public class RestTemplateOkHttpTest {
         String content = restTemplate.exchange(
                 RequestEntity.patch(URI.create("http://localhost:8080/rest/test")).build(),
                 String.class).getBody();
-        System.out.println(content);
 
         assertThat(content, is("patch by test"));
 
@@ -98,7 +95,6 @@ public class RestTemplateOkHttpTest {
         String content = restTemplate.exchange(
                 RequestEntity.delete(URI.create("http://localhost:8080/rest/test")).build(),
                 String.class).getBody();
-        System.out.println(content);
 
         assertThat(content, is("delete by test"));
 
@@ -113,15 +109,11 @@ public class RestTemplateOkHttpTest {
         HttpHeaders httpHeaders = restTemplate.exchange(
                 RequestEntity.options(URI.create("http://localhost:8080/rest/test")).build(),
                 String.class).getHeaders();
-        System.out.println(httpHeaders);
 
         assertThat(httpHeaders.getAllow(), is(containsInAnyOrder(
                 HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST, HttpMethod.PUT,
                 HttpMethod.DELETE, HttpMethod.TRACE, HttpMethod.OPTIONS, HttpMethod.PATCH)));
-
-
     }
-
 
 
 }
