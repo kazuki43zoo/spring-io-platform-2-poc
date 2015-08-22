@@ -27,8 +27,7 @@ public class ScriptTemplateController {
                 DateFormat.LONG, locale);
 
         model.addAttribute("title", "Sample title")
-                .addAttribute("body", "Sample body")
-                .addAttribute("serverTime", dateFormat.format(new Date()));
+                .addAttribute("body", "Sample body");
 
         // Workaround for https://jira.spring.io/browse/SPR-13379
         response.setContentType("text/html");
