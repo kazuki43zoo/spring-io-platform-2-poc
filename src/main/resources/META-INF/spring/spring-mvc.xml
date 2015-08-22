@@ -75,8 +75,18 @@
 
     <!-- Settings View Resolver. -->
     <mvc:view-resolvers>
+        <mvc:bean-name />
         <mvc:jsp prefix="/WEB-INF/views/" />
     </mvc:view-resolvers>
+
+    <bean id="script-template/home" class="org.springframework.web.servlet.view.script.ScriptTemplateView">
+        <property name="url" value="META-INF/views/script-template/home.html"/>
+        <property name="contentType" value="text/html"/>
+    </bean>
+
+    <mvc:script-template-configurer engine-name="nashorn" render-object="Mustache" render-function="render">
+        <mvc:script location="classpath:META-INF/resources/vendor/mustache/mustache.js"/>
+    </mvc:script-template-configurer>
 
     <bean id="requestDataValueProcessor"
         class="org.terasoluna.gfw.web.mvc.support.CompositeRequestDataValueProcessor">
