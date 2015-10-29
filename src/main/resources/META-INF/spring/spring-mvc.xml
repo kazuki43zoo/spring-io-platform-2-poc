@@ -29,6 +29,15 @@
             <bean
                 class="org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver" />
         </mvc:argument-resolvers>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+                        <property name="indentOutput" value="true"/>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
     </mvc:annotation-driven>
 
     <mvc:default-servlet-handler />
@@ -145,7 +154,10 @@
     <mvc:view-controller path="cros/global/form" view-name="cros/globalForm" />
 
     <mvc:cors>
-        <mvc:mapping path="/cros/global/**" allowed-origins="http://spring.example.jp:8080"/>
+        <!--<mvc:mapping path="/cros/global/**" allowed-origins="http://spring.example.jp:8080"  />-->
+        <mvc:mapping path="/cros/global/**" />
+        <mvc:mapping path="/cros/local/**"
+                     exposed-headers="a" />
     </mvc:cors>
 
 </beans>

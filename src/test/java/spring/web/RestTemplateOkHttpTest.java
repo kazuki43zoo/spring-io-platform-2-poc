@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.client.OkHttpClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -23,12 +24,15 @@ public class RestTemplateOkHttpTest {
     @Test
     public void test() {
 
-        OkHttpClientHttpRequestFactory factory = new OkHttpClientHttpRequestFactory();
+//        OkHttpClientHttpRequestFactory factory = new OkHttpClientHttpRequestFactory();
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+//        factory.setConnectTimeout(1);
+        factory.setReadTimeout(1);
         RestTemplate restTemplate = new RestTemplate(factory);
 
         Map<String, Object> urlVariables = new HashMap<>();
         urlVariables.put("username", "kazuki43zoo");
-        String content = restTemplate.getForObject("https://api.github.com/users/{username}", String.class, urlVariables);
+        String content = restTemplate.getForObject("http://gekirock.com/news/2015/09/teddyloid_re-momoiro-clover-z_trailer.php", String.class, urlVariables);
         System.out.println(content);
 
     }
@@ -50,6 +54,9 @@ public class RestTemplateOkHttpTest {
     public void testPost() {
 
         OkHttpClientHttpRequestFactory factory = new OkHttpClientHttpRequestFactory();
+        factory.setConnectTimeout(1);
+//        factory.setWriteTimeout(0);
+        factory.setReadTimeout(1);
         RestTemplate restTemplate = new RestTemplate(factory);
 
         String content = restTemplate.postForObject("http://localhost:8080/rest", null, String.class);

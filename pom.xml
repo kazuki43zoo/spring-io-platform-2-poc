@@ -184,6 +184,11 @@
             <scope>provided</scope>
         </dependency>
         -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Unit Test -->
         <dependency>
