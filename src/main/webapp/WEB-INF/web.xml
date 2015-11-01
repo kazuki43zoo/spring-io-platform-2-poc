@@ -115,21 +115,37 @@
     </jsp-config>
 
     <error-page>
-        <error-code>500</error-code>
-        <location>/WEB-INF/views/common/error/systemError.jsp</location>
+        <exception-type>java.lang.Error</exception-type>
+        <location>/WEB-INF/views/common/error/unhandledSystemError.json</location>
     </error-page>
+
+    <error-page>
+        <exception-type>java.io.FileNotFoundException</exception-type>
+        <location>/error?by=exceptionType&amp;httpStatus=NOT_FOUND</location>
+    </error-page>
+
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/views/common/error/resourceNotFoundError.jsp</location>
+        <location>/error?by=statusCode</location>
     </error-page>
+
     <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/WEB-INF/views/common/error/unhandledSystemError.html</location>
+        <error-code>599</error-code>
+        <location>/error?by=statusCode</location>
+    </error-page>
+
+    <error-page>
+        <location>/error</location>
     </error-page>
 
     <session-config>
         <!-- 30min -->
         <session-timeout>30</session-timeout>
     </session-config>
+
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json;charset=UTF-8</mime-type>
+    </mime-mapping>
 
 </web-app>

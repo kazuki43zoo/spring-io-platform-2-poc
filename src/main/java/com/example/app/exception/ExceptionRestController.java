@@ -25,6 +25,12 @@ public class ExceptionRestController {
         if ("nestedNotFound".equalsIgnoreCase(messageId)) {
             throw new RuntimeException(new CustomNotFoundException());
         }
+        if ("error".equalsIgnoreCase(messageId)) {
+            throw new Error("error!!");
+        }
+        if ("memoryError".equalsIgnoreCase(messageId)) {
+            throw new OutOfMemoryError("error!!");
+        }
         return messageSource.getMessage(messageId, args, messageId, locale);
     }
 
