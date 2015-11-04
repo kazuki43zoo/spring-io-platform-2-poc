@@ -1,4 +1,4 @@
-package com.example.app.uri;
+package com.example.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

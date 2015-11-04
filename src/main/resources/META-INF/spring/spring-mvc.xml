@@ -31,18 +31,26 @@
         </mvc:argument-resolvers>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper">
-                    <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
-                        <property name="indentOutput" value="true"/>
-                    </bean>
-                </property>
+                <property name="objectMapper" ref="objectMapper" />
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <bean id="objectMapper"
+        class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+        <property name="indentOutput" value="true"/>
+        <property name="failOnUnknownProperties" value="true"/>
+        <property name="dateFormat">
+            <bean class="com.fasterxml.jackson.databind.util.StdDateFormat"/>
+        </property>
+        <property name="propertyNamingStrategy" value="CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES" />
+    </bean>
+
+
     <mvc:default-servlet-handler />
 
     <context:component-scan base-package="com.example.app" />
+    <context:component-scan base-package="com.example.api" />
 
     <mvc:resources mapping="/resources/**"
         location="/resources/,classpath:META-INF/resources/"

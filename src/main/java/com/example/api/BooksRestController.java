@@ -1,4 +1,4 @@
-package com.example.app.uri;
+package com.example.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -7,6 +7,8 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
@@ -15,10 +17,20 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 @RestController
 public class BooksRestController {
 
-    @RequestMapping(path = "{isbn}", method = RequestMethod.POST)
+    @RequestMapping(path = "{isbn}", method = RequestMethod.GET)
     public BookResource getBook(@PathVariable String isbn) {
-        return null;
+        BookResource resource = new BookResource();
+        resource.setIbsn("xxx-x-xxxx-xxxx-x");
+        resource.setName("書籍名");
+        resource.setAuthors(Arrays.asList("著者A"));
+        resource.setPublishedDate(LocalDate.of(2016, 4, 1));
+        BookResource.Publisher publisher = new BookResource.Publisher();
+        publisher.setName("翔泳社");
+        publisher.setTel("03-xxxx-xxxx");
+        resource.setPublisher(publisher);
+        return resource;
     }
+
 //
 //    @RequestMapping(method = RequestMethod.POST)
 //    public ResponseEntity<Void> createBook(
@@ -41,7 +53,7 @@ public class BooksRestController {
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> createBook(
+    public ResponseEntity<BookResource> createBook(
             @Validated @RequestBody BookResource newResource,
             UriComponentsBuilder uriBuilder) {
 
@@ -55,6 +67,6 @@ public class BooksRestController {
 
         return ResponseEntity
                 .created(resourceUri)
-                .build();
+                .body(newResource);
     }
 }
