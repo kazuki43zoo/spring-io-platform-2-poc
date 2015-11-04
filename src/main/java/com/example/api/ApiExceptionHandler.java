@@ -81,8 +81,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler { // (1)
     }
 
     private String resolveMessage(Exception ex, String defaultMessage) {
-        return messageMappings
-                .entrySet().stream()
+        return messageMappings.entrySet().stream()
                 .filter(entry -> entry.getKey().isAssignableFrom(ex.getClass()))
                 .findFirst()
                 .map(entry -> entry.getValue())
