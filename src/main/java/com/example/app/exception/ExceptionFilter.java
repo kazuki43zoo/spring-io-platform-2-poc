@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*", asyncSupported = true, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.ASYNC})
 public class ExceptionFilter implements Filter {
 
     @Override
@@ -41,6 +41,7 @@ public class ExceptionFilter implements Filter {
         }
         chain.doFilter(request, response);
 
+        System.out.println(Thread.currentThread() + " : aaaaa");
     }
 
     @Override

@@ -20,9 +20,15 @@
     <!-- Add for @Async -->
     <task:annotation-driven />
 
+    <task:executor id="mvcAsyncTaskExecutor" pool-size="5-10" queue-capacity="25" />
+
     <mvc:annotation-driven>
         <!-- Add for Async(Callable/DeferredResult) -->
-        <mvc:async-support default-timeout="2000" />
+        <mvc:async-support default-timeout="2000" task-executor="mvcAsyncTaskExecutor">
+            <mvc:deferred-result-interceptors>
+                <bean class="com.example.app.async.TimeoutDeferredResultProcessingInterceptor" />
+            </mvc:deferred-result-interceptors>
+        </mvc:async-support>
         <mvc:argument-resolvers>
             <bean
                 class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />

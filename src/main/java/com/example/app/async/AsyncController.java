@@ -60,7 +60,7 @@ public class AsyncController {
 
     @RequestMapping(path = "listenableFuture", method = RequestMethod.GET)
     public ListenableFuture<String> listenableFuture(@RequestParam(name = "wait", defaultValue = "0") long wait, Model model, Locale locale) throws InterruptedException {
-        return taskExecutor.submitListenable(() -> {
+        ListenableFuture<String> f = taskExecutor.submitListenable(() -> {
 
             if (wait == 999) {
                 throw new NullPointerException("error.");
@@ -79,11 +79,21 @@ public class AsyncController {
 
             return "welcome/home";
         });
+        f.addCallback((r)->{
+            System.out.println(r);
+
+        },(e)->{
+            System.out.println(e);
+        });
+        return f;
     }
 
     @RequestMapping(path = "completableFuture", method = RequestMethod.GET)
     public CompletableFuture<String> completableFuture(@RequestParam(name = "wait", defaultValue = "0") long wait, Model model, Locale locale) throws InterruptedException {
-        return CompletableFuture.supplyAsync(() -> {
+        System.out.println(Thread.currentThread() + " : completableFuture1");
+
+        CompletableFuture<String> f =  CompletableFuture.supplyAsync(() -> {
+            System.out.println(Thread.currentThread() + " : completableFuture2");
             Date date = new Date();
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
                     DateFormat.LONG, locale);
@@ -104,6 +114,7 @@ public class AsyncController {
 
             return "welcome/home";
         });
+        return f;
     }
 
 }

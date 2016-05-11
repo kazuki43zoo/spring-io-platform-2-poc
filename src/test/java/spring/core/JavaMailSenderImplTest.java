@@ -33,7 +33,7 @@ public class JavaMailSenderImplTest {
 
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("localhost");
-        javaMailSender.setPort(9999);
+        javaMailSender.setPort(19999);
 
         javaMailSender.testConnection();
 
